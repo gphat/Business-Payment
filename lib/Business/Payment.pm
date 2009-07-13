@@ -3,9 +3,12 @@ use Moose;
 
 our $VERSION = '0.01';
 
+use Business::Payment::Charge;
+
 has processor => (
-    is => 'ro',
-    isa => 'Business::Payment::Processor'
+    is       => 'ro',
+    does     => 'Business::Payment::Processor',
+    required => 1,
 );
 
 sub handle {
@@ -14,9 +17,18 @@ sub handle {
     return $self->processor->handle($charge);
 }
 
-__PACKAGE__->meta->make_immutable;
+sub charge {
+    my ( $self, %fields ) = @_;
 
-1;
+    my $roles = $self->processor->charge_roles;
+    return Business::Payment::Charge->new_with_traits( 
+        traits => $roles,
+        %fields
+    );
+}
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 

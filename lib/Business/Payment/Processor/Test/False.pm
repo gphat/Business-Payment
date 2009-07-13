@@ -1,7 +1,8 @@
 package Business::Payment::Processor::Test::False;
+
 use Moose;
 
-extends 'Business::Payment::Processor';
+with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
@@ -15,9 +16,8 @@ sub handle {
     );
 }
 
+no Moose;
 __PACKAGE__->meta->make_immutable;
-
-1;
 
 =head1 NAME
 

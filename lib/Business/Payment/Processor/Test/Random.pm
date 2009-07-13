@@ -1,7 +1,7 @@
 package Business::Payment::Processor::Test::Random;
 use Moose;
 
-extends 'Business::Payment::Processor';
+with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
@@ -29,9 +29,8 @@ sub handle {
     return $result;
 }
 
+no Moose;
 __PACKAGE__->meta->make_immutable;
-
-1;
 
 =head1 NAME
 

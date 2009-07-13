@@ -1,7 +1,17 @@
 package Business::Payment::Charge;
-use Moose;
 
+use Moose;
 use Business::Payment::Types;
+
+with 'MooseX::Traits';
+has '+_trait_namespace' => ( default => 'Business::Payment::Charge' );
+
+has type => (
+    is          => 'ro',
+    isa         => 'Str',
+    required    => 1,
+    default     => 'CHARGE'
+);
 
 has amount => (
     is => 'ro',
@@ -10,9 +20,8 @@ has amount => (
     required => 1
 );
 
+no Moose;
 __PACKAGE__->meta->make_immutable;
-
-1;
 
 =head1 NAME
 

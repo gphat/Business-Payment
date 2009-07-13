@@ -1,7 +1,8 @@
 package Business::Payment::Processor::Test::True;
+
 use Moose;
 
-extends 'Business::Payment::Processor';
+with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
@@ -13,29 +14,8 @@ sub handle {
     );
 }
 
+no Moose;
 __PACKAGE__->meta->make_immutable;
-
-1;
-package Business::Payment::Processor::Test::False;
-use Moose;
-
-extends 'Business::Payment::Processor';
-
-use Business::Payment::Result;
-
-sub handle {
-    my ($self, $charge) = @_;
-
-    return Business::Payment::Result->new(
-        success => 0,
-        error_code => -1,
-        error_message => 'Failed on purpose!'
-    );
-}
-
-__PACKAGE__->meta->make_immutable;
-
-1;
 
 =head1 NAME
 
