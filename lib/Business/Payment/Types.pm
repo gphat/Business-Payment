@@ -11,4 +11,5 @@ coerce 'Math::Currency',
     from Num,
     via { Math::Currency->new(@_) };
 
+
 1;

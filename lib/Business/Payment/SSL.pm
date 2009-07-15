@@ -44,13 +44,15 @@ sub uri {
 sub request { 
     my ( $self, $headers, $data ) = @_;
 
-    my $method = uc($self->method) eq 'POST' ? 'post_https' : 'get_https';
     $headers = ref $headers eq 'HASH' ? make_headers(%$headers) : $headers;
     $data    = ref $data eq 'HASH' ? make_form(%$data) : $data;
+    warn "Sending:\n$data\n";
+    my @args = ( $self->server, $self->port, $self->path, $headers, $data );
+    my $method = 
     my ( $page, $response, %response_headers ) = 
-        &{$method}( $self->server, $self->port, $self->path, $headers, $data );
+        ( uc($self->method) eq 'POST' ? post_https(@args) : get_https(@args) );
 
-    return $response;
+    return ( $page, $response );
 }
 
 no Moose::Role;

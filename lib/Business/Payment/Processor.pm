@@ -3,7 +3,8 @@ package Business::Payment::Processor;
 use Moose::Role;
 use Carp;
 
-requires 'handle';
+requires 'prepare_data';
+requires 'request';
 
 has 'charge_roles' => (
     is       => 'rw',
@@ -12,7 +13,7 @@ has 'charge_roles' => (
     default  => sub { [] }
 );
 
-before 'handle' => sub {
+sub prepare_charge {
     my ( $self, $charge ) = @_;
 
     # TODO: This doesn't necessarily have to be here, there are roles that
@@ -32,7 +33,28 @@ before 'handle' => sub {
             }
         }
     }
-};
+
+}
+
+sub handle {
+    my ( $self, $charge ) = @_;
+
+    $self->prepare_charge( $charge );
+
+    my $data     = $self->prepare_data( $charge );
+    
+    $self->prepare_result( $self->request( { }, $data ) );
+}
+
+sub prepare_result {
+    my ( $self, $response ) = @_;
+    return Business::Payment::Result->new(
+        success         => 0,
+        error_code      => -1,
+        error_message   => 'No prepare_result method defined in processor'
+    );
+}
+
 
 1;
 

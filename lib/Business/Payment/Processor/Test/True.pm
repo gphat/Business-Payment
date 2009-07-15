@@ -6,7 +6,9 @@ with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
-sub handle {
+sub request      { return ( 'OK', 'OK' ); }
+sub prepare_data { return {} };
+sub prepare_result {
     my ($self, $charge) = @_;
 
     return Business::Payment::Result->new(

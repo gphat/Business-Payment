@@ -20,6 +20,16 @@ has amount => (
     required => 1
 );
 
+has credit_card => (
+    is  => 'rw',
+    isa => 'Object'
+);
+
+has description => (
+    is  => 'rw',
+    isa => 'Str',
+);
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

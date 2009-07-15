@@ -16,6 +16,14 @@ has 'charge_roles' => (
     ] }
 );
 
+has 'delim_char' => ( 
+    is => 'rw', isa => 'Str', required => 1, default => '|' 
+);
+
+has 'api_version' => ( 
+    is => 'rw', isa => 'Str', required => 1, default => '3.1' 
+);
+
 has '+server' => (
     default => 'secure.authorize.net'
 );
@@ -42,31 +50,28 @@ has 'email_customer' => (
     default     => 0
 );
 
-sub handle {
+sub prepare_data {
     my ( $self, $charge ) = @_;
 
-    my $data = $self->_setup_request( $charge );
-    #$self->request(
-    #    { },
-    #    { %data }
-    #);
+    my %data = (
+        x_login             => $self->login,
+        x_password          => $self->password,
+        x_version           => $self->api_version,
+        x_delim_data        => "TRUE",
+        x_delim_char        => $self->delim_char,
+        x_relay_response    => "FALSE",
 
-    return Business::Payment::Result->new(
-        success => 0,
-        error_code => -1,
-        error_message => 'Failed on purpose!'
     );
-}
-
-sub _setup_request {
-    my ( $self, $charge ) = @_;
-
-    my %data = ();
 
     if ( $self->email_customer ) {
         $data{'x_Email_Customer'} = 'TRUE';
     }
 
+    if ( defined $charge->credit_card ) {
+        $data{x_method}   = 'CC';
+        $data{x_card_num} = $charge->credit_card->number;
+        $data{x_exp_date} = $charge->credit_card->expdate;
+    }
     $charge->type eq 'VOID' ?
         $data{'x_Method'} = 'VOID' :
     $charge->type eq 'CREDIT' ?
@@ -80,9 +85,46 @@ sub _setup_request {
     # Unknown charge type, end it here
         croak "Unknown charge type";
 
+    $data{'x_amount'}      = $charge->amount;
+    $data{'x_description'} = $charge->description;
     return \%data;
 }
 
+sub prepare_result {
+    my ( $self, $page, $response ) = @_;
+
+use Data::Dump 'dump';
+warn "Page: " . dump($page);
+warn "Response: " . dump($response);
+
+    my $char = $self->delim_char;
+    my @data = split( /\Q$char/, $page );
+    my $index = 0;
+    my %fields = 
+        map { $_ => $data[$index++] }
+        qw/ 
+            code subcode reason reason_text authorization avs
+            transaction_id invoice_number
+            description amount method transaction_type
+            customer_id first_name last_name company
+            address city state zip country
+            phone fax email 
+            ship_to_first_name ship_to_last_name ship_to_first_company 
+            ship_to_address ship_to_city ship_to_state ship_to_zip 
+            ship_to_country
+            tax duty freight tax_exempt po_number md5_hash
+            card_code_response cardholder_auth
+        /;
+
+    my $r = Business::Payment::Result->new(
+        success         => $fields{code} == 1,
+        error_code      => $fields{reason},
+        error_message   => $fields{reason_text},
+        extra           => \%fields
+    );
+
+    return $r;
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

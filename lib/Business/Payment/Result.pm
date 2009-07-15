@@ -17,6 +17,16 @@ has success => (
     required => 1
 );
 
+has extra => (
+    is => 'rw',
+    isa => 'HashRef'
+);
+
+has 'avs_response' => (
+    is  => 'rw',
+    isa => 'Str'
+);
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

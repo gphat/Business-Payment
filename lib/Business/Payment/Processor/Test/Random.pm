@@ -5,8 +5,10 @@ with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
-sub handle {
-    my ($self, $charge) = @_;
+sub request      { return ( 'OK', 'OK' ); }
+sub prepare_data { return {} };
+sub prepare_result {
+    my ($self, $page, $response) = @_;
 
     srand(time);
 

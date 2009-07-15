@@ -6,15 +6,8 @@ with 'Business::Payment::Processor';
 
 use Business::Payment::Result;
 
-sub handle {
-    my ($self, $charge) = @_;
-
-    return Business::Payment::Result->new(
-        success => 0,
-        error_code => -1,
-        error_message => 'Failed on purpose!'
-    );
-}
+sub request { return ( 'OK', 'OK' ); }
+sub prepare_data { return {} };
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
