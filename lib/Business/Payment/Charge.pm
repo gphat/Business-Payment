@@ -4,13 +4,15 @@ use Moose;
 use Business::Payment::Types;
 
 with 'MooseX::Traits';
-has '+_trait_namespace' => ( default => 'Business::Payment::Charge' );
+
+has '+_trait_namespace' => (
+    default => sub { 'Business::Payment::Charge' }
+);
 
 has type => (
     is          => 'ro',
     isa         => 'Str',
-    required    => 1,
-    default     => 'CHARGE'
+    default     => sub { 'CHARGE' }
 );
 
 has amount => (
@@ -27,7 +29,7 @@ has credit_card => (
 
 has description => (
     is  => 'rw',
-    isa => 'Str',
+    isa => 'Str'
 );
 
 no Moose;

@@ -9,7 +9,6 @@ requires 'request';
 has 'charge_roles' => (
     is       => 'rw',
     isa      => 'ArrayRef[Str]',
-    required => 1,
     default  => sub { [] }
 );
 

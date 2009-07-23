@@ -16,7 +16,7 @@ has 'charge_roles' => (
     ] }
 );
 
-has 'delim_char' => ( 
+has 'delim_char' => (
     is => 'rw', isa => 'Str', required => 1, default => '|' 
 );
 

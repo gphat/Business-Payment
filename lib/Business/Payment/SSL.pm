@@ -8,28 +8,25 @@ use Net::SSLeay qw(make_headers make_form get_https post_https);
 has 'server' => (
     is          => 'rw',
     isa         => 'Str',
-    required    => 1
+    required    => sub { 1 }
 );
 
 has 'port' => (
     is          => 'rw',
     isa         => 'Int',
-    required    => 1,
-    default     => 443
+    default     => sub { 443 }
 );
 
 has 'path' => (
     is          => 'rw',
     isa         => 'Str',
-    required    => 1,
-    default     => '/'
+    default     => sub { '/' }
 );
 
 has 'method' => (
     is          => 'rw',
     isa         => 'Str',
-    required    => 1,
-    default     => 'POST'
+    default     => sub { 'POST' }
 );
 
 sub uri {
