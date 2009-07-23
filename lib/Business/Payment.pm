@@ -21,7 +21,7 @@ sub charge {
     my ( $self, %fields ) = @_;
 
     my $roles = $self->processor->charge_roles;
-    return Business::Payment::Charge->new_with_traits( 
+    return Business::Payment::Charge->new_with_traits(
         traits => $roles,
         %fields
     );
@@ -56,7 +56,10 @@ Business::Payment - Payment Processing Library
 =head1 DESCRIPTION
 
 Business::Payment is a payment abstraction library, primarily meant to be used
-as an abstraction in front of payment processor libraries.
+in front of payment processor libraries.  The expected use is for credit cards
+but care is taken to assume little and to allow the implementor to choose
+what functionality is needed, leaving the door open for other payment processing
+needs.
 
 =head1 AUTHOR
 
