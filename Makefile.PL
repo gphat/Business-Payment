@@ -7,6 +7,7 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires    'DateTime';
 requires    'Math::Currency'    => 0.46;
 requires    'Moose'             => 0.87;
 requires    'MooseX::Types'     => 0.16;

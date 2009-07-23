@@ -1,6 +1,7 @@
 package Business::Payment::CreditCard;
-
 use Moose;
+
+use Business::Payment::Types;
 
 has 'cvn' => (
     is => 'rw',
@@ -10,6 +11,7 @@ has 'cvn' => (
 has 'expiration' => (
     is       => 'rw',
     isa      => 'DateTime',
+    coerce   => 1,
     required => 1
 );
 
