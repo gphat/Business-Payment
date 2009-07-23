@@ -47,7 +47,10 @@ information to a Charge.
 
 =head2 cvn
 
-Set/Get the CVN number for this Credit Card
+Set/Get the Card Verification Number for this Credit Card.  This is also
+referred to as the CVV, CVV2, CVVC, CVC, V-Code or CCV.
+
+http://en.wikipedia.org/wiki/Card_Verification_Number
 
 =head2 expiration
 
