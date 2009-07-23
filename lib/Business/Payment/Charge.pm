@@ -6,13 +6,13 @@ use Business::Payment::Types;
 with 'MooseX::Traits';
 
 has '+_trait_namespace' => (
-    default => sub { 'Business::Payment::Charge' }
+    default => 'Business::Payment::Charge'
 );
 
 has type => (
     is          => 'ro',
     isa         => 'Str',
-    default     => sub { 'CHARGE' }
+    default     => 'CHARGE'
 );
 
 has amount => (
