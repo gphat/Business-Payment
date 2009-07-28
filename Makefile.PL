@@ -5,7 +5,7 @@ all_from 'lib/Business/Payment.pm';
 author   'Cory G Watson <email>';
 license  'perl';
 
-build_requires 'Text::Exception';
+build_requires 'Test::Exception';
 build_requires 'Test::More';
 
 requires    'DateTime';
