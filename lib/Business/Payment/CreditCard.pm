@@ -3,7 +3,15 @@ use Moose;
 
 use Business::Payment::Types;
 
-has 'cvn' => (
+extends 'Business::Payment::Charge';
+
+with 'MooseX::Traits';
+
+has '+_trait_namespace' => (
+    default => 'Business::Payment::CreditCard'
+);
+
+has 'csc' => (
     is => 'rw',
     isa => 'Num'
 );
@@ -21,8 +29,8 @@ has 'number' => (
     required => 1
 );
 
-sub expdate {
-    shift->expiration->strftime('%m%y');
+sub expiration_formatted {
+    shift->expiration->strftime(shift);
 }
 
 no Moose;
@@ -47,12 +55,12 @@ information to a Charge.
 
 =head1 ATTRIBUTES
 
-=head2 cvn
+=head2 csc
 
-Set/Get the Card Verification Number for this Credit Card.  This is also
+Set/Get the Card Security Code for this Credit Card.  This is also
 referred to as the CVV, CVV2, CVVC, CVC, V-Code or CCV.
 
-http://en.wikipedia.org/wiki/Card_Verification_Number
+http://en.wikipedia.org/wiki/Card_Verification_Value
 
 =head2 expiration
 
@@ -65,9 +73,10 @@ Set/Get the credit card number.
 
 =head1 METHODS
 
-=head2 expdate
+=head2 expiration_formatted ($format)
 
-Returns a stringified expiration date in the form of %m%y.
+Returns a stringified version of the expiration date using the supplied
+format.  (See DateTime's strftime)
 
 =head1 AUTHOR
 
