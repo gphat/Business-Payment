@@ -19,10 +19,10 @@ coerce 'DateTime',
         my ($date) = @_;
         my ($m, $y); # Predeclare M and Y that we will use for DT
         # Catch things in the form of MM/YY
-        if($date =~ /\//) {
-            ($m, $y) = split('\/', $date);
+        if($date =~ /^(\d+)\/(\d+)$/) {
+            ($m, $y) = ($1,$2);
         } else {
-            die 'Expiration date must be in the form of MM/YY or MM/YYYY';
+            die "Expiration date must be in the form of MM/YY or MM/YYYY (not $date)";
         }
 
         # Build a 4 digit year by prepending the first two digits of the
