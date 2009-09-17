@@ -20,6 +20,35 @@ has 'address' => (
     required => 1
 );
 
+has 'city' => (
+    is => 'rw',
+    isa => 'Str',
+    required => 1
+);
+
+has 'state' => (
+    is => 'rw',
+    isa => 'Str',
+    required => 1
+);
+
+has 'zip' => (
+    is => 'rw',
+    isa => 'Str',
+    required => 1
+);
+
+has 'country' => (
+    is => 'rw',
+    isa => 'Str',
+    required => 0
+);
+
+has 'customer_id' => (
+    is => 'rw',
+    isa => 'Str|Int',
+);
+
 no Moose::Role;
 1;
 

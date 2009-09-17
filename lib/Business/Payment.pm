@@ -27,6 +27,17 @@ sub charge {
     );
 }
 
+sub refund {
+    my ( $self, %fields ) = @_;
+
+    my $roles = $self->processor->refund_roles;
+    $fields{type} ||= 'CREDIT';
+    return Business::Payment::Charge->new_with_traits(
+        traits => $roles,
+        %fields
+    );
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

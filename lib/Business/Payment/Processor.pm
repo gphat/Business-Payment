@@ -40,7 +40,7 @@ sub handle {
 
     $self->prepare_charge( $charge );
 
-    my $data     = $self->prepare_data( $charge );
+    my $data = $self->prepare_data( $charge );
     
     $self->prepare_result( $self->request( { }, $data ) );
 }
